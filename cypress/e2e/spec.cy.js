@@ -1,22 +1,35 @@
-describe('spec.cy.js', () => {
+describe('Sign In', () => {
   //Arrange
   //Act
   //Assertion
-  it('should visit our sign in page', () => {
+  beforeEach(() => {
     cy.visit('http://localhost:3000/')
-    cy.contains('Sign In').click()
   })
 
-  it('should allow input', () => {
-    cy.get('.uname-input')
-      .type('hermanmuenster@gmail.com').should('have.value', 'hermanmuenster@gmail.com')
+  it('Rejects blank username', () => {
     cy.get('.pword-input')
       .type('pass1234').should('have.value', 'pass1234')
-  })
-
-  it('should throw an error if username is not in the database', () => {
     cy.get('.submit-button').click()
-    cy.contains('Invalid Username')
-
+    cy.contains('Username is Required')
   })
+
+  it('Rejects blank password', () => {
+    cy.get('.uname-input')
+      .type('hermanmuenster@gmail.com').should('have.value', 'hermanmuenster@gmail.com')
+      cy.get('.submit-button').click()
+      cy.contains('Password is Required')
+  })
+
+  it('Rejects short password', () => {
+    cy.get('.uname-input')
+      .type('hermanmuenster@gmail.com').should('have.value', 'hermanmuenster@gmail.com')
+      cy.get('.pword-input')
+      .type('pass12').should('have.value', 'pass12')
+      cy.get('.submit-button').click()
+      cy.contains('Password is too short')
+  })
+  // it('should throw an error if username is not in the database', () => {
+
+
+  // })
 })
